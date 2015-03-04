@@ -11,15 +11,34 @@ import java.util.*;
 
 public class TreeUtils {
     
-    private int level = 0, height1, height2;
+    /*
+     * Instance variables
+     */
+    private static int level = 0, height1, height2;
     
-    public boolean similar(BinaryTreeNode node1, BinaryTreeNode node2){
+    /*
+     * A method that checks for similarity in the shape of the BST
+     */
+    public static boolean similar(BinaryTreeNode node1, BinaryTreeNode node2){
+        /*
+         * Checks if the level is zero and if so assigns the heights of the trees to variables
+         */
         if (level == 0){
             height1 = node1.getHeight();
             height2 = node2.getHeight();
         }
         
+        /*
+         * Checks if the heights of the trees are equal, if yes: outputs true, if no: outputs false
+         */
         if (height1 == height2){
+            /*
+             *Checks that level zero is being checked and whether there is a node or not in both trees.
+             * If both don't have nodes returns true, if one has a node and the other doesn't it returns false.
+             * In the case that both have nodes it will then check if these nodes have right and left nodes,
+             * it will continue in this way until all nodes have been checked or the trees are determined to 
+             * be not similar.
+             */
             if (level == 0 && levelZeroNodeList(node1).equals("") && levelZeroNodeList(node2).equals("")){
                 return true;
             }
@@ -55,9 +74,14 @@ public class TreeUtils {
         else{
             return false;
         }
+        return false;
     }
     
-    public String levelZeroNodeList(BinaryTreeNode temp){
+    /*
+     * A method that makes a string out of the root node of a tree or returns 
+     * an empty string if the node is null.
+     */
+    public static String levelZeroNodeList(BinaryTreeNode temp){
         if (temp.getHeight() == 0){
             return "";
         }
@@ -67,20 +91,5 @@ public class TreeUtils {
            
     }
     
-    public String levelNplusOneNodeList(BinaryTreeNode temp){
-        if (temp.hasLeft() && temp.hasRight()){
-            return temp.getLeft() + "#" + temp.getRight() + "#";
-        }
-        else if (temp.hasLeft()){
-            return temp.getLeft() + "#null#";
-        }
-        else if (temp.hasRight()){
-            return "null#" + temp.getRight() + "#";
-        }
-        else{
-            return "";
-        }
-        
-    }
     
 }
