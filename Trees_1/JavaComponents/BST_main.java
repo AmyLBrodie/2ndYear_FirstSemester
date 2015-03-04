@@ -60,7 +60,9 @@ public class BST_main {
         }
         
         SimpleTreeWriter writer = new SimpleTreeWriterImpl();
-        
+        /*
+         * Prints the BSTs to the command line
+         */
         System.out.println("Tree one:");
         SimpleBST.print(searchTreeOne,writer);
         System.out.println("Tree two:");
