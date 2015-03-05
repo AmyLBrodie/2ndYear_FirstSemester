@@ -49,14 +49,18 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
      * Also controls the formatting for the printing of the BST (spacing, etc).
      */
     public void write(BinaryTreeNode tree){
-        int height = tree.getHeight(), largest = tree.getLargest(), leadingBlanks, betweenBlanks, level=0;
+        int height, largest, leadingBlanks, betweenBlanks, level=0;
+        
         StringBuilder printTree = new StringBuilder();
         boolean beginning = true;
             
-        if (tree.getItem() != null){
+        if (tree != null){
             // creates two queues so the BST can be traversed level by level
             Queue<BinaryTreeNode> thisLevel = new LinkedList<BinaryTreeNode>();
             Queue<BinaryTreeNode> nextLevel = new LinkedList<BinaryTreeNode>();
+            
+            height = tree.getHeight();
+            largest = tree.getLargest();
             
             thisLevel.add(tree);
             // loop runs while the queue is not empty and the level is less than the height of the tree
@@ -125,6 +129,9 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
                 print.println(printTree.toString());
                 printTree.delete(0, printTree.length());
             }
+        }
+        else{
+            print.println("");
         }
         
         

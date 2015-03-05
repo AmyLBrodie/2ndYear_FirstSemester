@@ -22,7 +22,7 @@ public class TreeUtils {
         /*
          * Checks if the level is zero and if so assigns the heights of the trees to variables
          */
-        if (level == 0){
+        if (node1 != null && node2 != null && level == 0){
             height1 = node1.getHeight();
             height2 = node2.getHeight();
         }
@@ -81,10 +81,10 @@ public class TreeUtils {
      * an empty string if the node is null.
      */
     public static String levelZeroNodeList(BinaryTreeNode temp){
-        if (temp.getHeight() == 0){
+        if (temp == null){
             return "";
         }
-        else{
+        else {
             return Integer.toString(temp.getItem());
         }
            
