@@ -6,12 +6,13 @@
  */
 
 import java.util.*;
+import java.io.*;
 
 /*
  * Driver class for the BST project
  */
 public class BST_main {
-    public static void main(String args[]){
+    public static void main(String args[]) throws FileNotFoundException{
         // Input from commandline
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter a comma separarted list of numbers for tree one: ");
@@ -59,14 +60,18 @@ public class BST_main {
             searchTreeTwo.insert(tempTwo);
         }
         
-        SimpleTreeWriter writer = new SimpleTreeWriterImpl();
+        File file1 = new File("T1.out"), file2 = new File("T2.out");
+        
+        SimpleTreeWriter writer = new SimpleTreeWriterImpl(System.out), treeWriter1 = new SimpleTreeWriterImpl(new PrintStream(file1)), treeWriter2 = new SimpleTreeWriterImpl(new PrintStream(file2));
         /*
          * Prints the BSTs to the command line
          */
         System.out.println("Tree one:");
         SimpleBST.print(searchTreeOne,writer);
+        SimpleBST.print(searchTreeOne,treeWriter1);
         System.out.println("Tree two:");
         SimpleBST.print(searchTreeTwo,writer);
+        SimpleBST.print(searchTreeTwo,treeWriter2);
         
         
         

@@ -10,22 +10,24 @@ import java.io.PrintStream;
  * @version 01/03/2015
  */
 
-import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.*;
 
 public class SimpleTreeWriterImpl implements SimpleTreeWriter{
     
-    private File file;
+    private PrintStream print;
     
+    /*
+     * Constructor that accepts a printstream as the  parameter
+     */
+    public SimpleTreeWriterImpl(PrintStream stream){
+         setDestination(stream) ;
+    }
+    
+    /*
+     * Sets the destination for the printstream to print to
+     */
     public void setDestination(PrintStream stream){
-        try {
-            stream = new PrintStream(file);
-        } 
-        catch (FileNotFoundException ex) {
-            Logger.getLogger(SimpleTreeWriterImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        print = new PrintStream(stream);    
            
     }
     
@@ -69,9 +71,11 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
                             printTree.append(" ");
                         } 
                         beginning = false;
+                        // handles normal nodes
                         if (thisLevel.peek().getItem() != null){
-                            printTree.append(extraSpaces(Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
+                            
                             printTree.append(thisLevel.peek().getItem());
+                            printTree.append(extraSpaces(Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
                         }
                         // handles null nodes
                         else{
@@ -84,8 +88,9 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
                             printTree.append(" ");
                         } 
                         if (thisLevel.peek().getItem() != null){
-                            printTree.append(extraSpaces(Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
+                            
                             printTree.append(thisLevel.peek().getItem());
+                            printTree.append(extraSpaces(Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
                         }
                         // handles null nodes
                         else{
@@ -117,7 +122,7 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
                     thisLevel.add(nextLevel.remove());
                 }
                 level += 1;
-                System.out.println(printTree.toString());
+                print.println(printTree.toString());
                 printTree.delete(0, printTree.length());
             }
         }
