@@ -31,18 +31,7 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
            
     }
     
-    /*
-     * Checks if width of largest node is greater than other nodes and provides spaces for the formatting
-     */
-    private String extraSpaces(String node, String largest){
-        String temp = "";
-        if (largest.length() > node.length()){
-            for (int i=0; i<largest.length()-node.length();i++){
-                temp += " ";
-            }
-        }
-        return temp;
-    }
+
     
     /*
      * A method that allows the BST to be printed to the screen and other files.
@@ -65,41 +54,41 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter{
             thisLevel.add(tree);
             // loop runs while the queue is not empty and the level is less than the height of the tree
             while ((!thisLevel.isEmpty())&& (level < height)){
-                leadingBlanks = (int) ((Math.pow(2,height-level) -1)/2); // number of leading spaces needed
-                betweenBlanks = (int) (Math.pow(2,height-level)-1); // number of spaces needed in between nodes
+                leadingBlanks = (int) ((Math.pow(2,height-level)-1)/2); // number of leading spaces needed
+                betweenBlanks = (int) ((Math.pow(2,height-level)-1)); // number of spaces needed in between nodes
                 // loop runs while queue is not empty
                 while (!thisLevel.isEmpty()){
                     // if boolean value is true then node is first in level
                     if (beginning == true){
-                        for (int leadSpaces = 0; leadSpaces < leadingBlanks;leadSpaces++){
+                        for (int leadSpaces = 0; leadSpaces < leadingBlanks*Integer.toString(largest).length()-(height-1-level);leadSpaces++){
                             printTree.append(" ");
                         } 
+                       
                         beginning = false;
                         // handles normal nodes
                         if (thisLevel.peek().getItem() != null){
-                            
+                            //printTree.append(extraSpaces(level, height, Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
                             printTree.append(thisLevel.peek().getItem());
-                            printTree.append(extraSpaces(Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
                         }
                         // handles null nodes
                         else{
-                            printTree.append(extraSpaces(" ", Integer.toString(largest)));
-                            printTree.append(" ");
+                            //printTree.append(extraSpaces(level, height," ", Integer.toString(largest)));
+                            printTree.append("  ");
                         }
                     }
                     else{
-                       for (int betweenSpaces = 0; betweenSpaces < betweenBlanks;betweenSpaces++){
+                       for (int betweenSpaces = 0; betweenSpaces < betweenBlanks*Integer.toString(largest).length();betweenSpaces++){
                             printTree.append(" ");
-                        } 
+                        }
+                       
                         if (thisLevel.peek().getItem() != null){
-                            
+                            //printTree.append(extraSpaces(level, height,Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
                             printTree.append(thisLevel.peek().getItem());
-                            printTree.append(extraSpaces(Integer.toString(thisLevel.peek().getItem()), Integer.toString(largest)));
                         }
                         // handles null nodes
                         else{
-                            printTree.append(extraSpaces(" ", Integer.toString(largest)));
-                            printTree.append(" ");
+                            //printTree.append(extraSpaces(level, height," ", Integer.toString(largest)));
+                            printTree.append("  ");
                         }
                     }
                     // checks if node has left branch
