@@ -68,6 +68,16 @@ public class TreeUI {
    
     }
     
+    // creates a new AVL tree
+    private class New extends Command {
+        public String help() { return "new"; }
+
+        public void execute(String argument) throws IllegalArgumentException {
+            target = new AVLTree();
+        }
+    }
+    
+    // allows user to check if the specified value is in the tree
     private class Contains extends Command {
         public String help() { return "contains <key value>"; }
 
@@ -82,6 +92,7 @@ public class TreeUI {
         }
     }
     
+    // allows user to insert user defined value into the tree
     private class Insert extends Command {
         public String help() { return "insert <key value>"; }
 
@@ -95,6 +106,7 @@ public class TreeUI {
         }
     }
     
+    // allows user to print AVL tree to the screen
     private class Print extends Command {
         public String help() { return "print"; }
 
@@ -103,14 +115,15 @@ public class TreeUI {
         }
     }
     
+    // allows user to write AVL tree to user specified file
     private class Write extends Command {
         public String help() { return "write <file name>"; }
 
         public void execute(String argument) throws IllegalArgumentException {
             try {
-                File file = new File(argument);
-                PrintStream stream = new PrintStream(file);
-                target.print(stream);
+                File file = new File(argument); // sets file to be printed to
+                PrintStream stream = new PrintStream(file); // creates new printstream using specified file as destination
+                target.print(stream); // allows for the tree to be printed to the file
             }
             catch (NumberFormatException numFormE) {
                 throw new IllegalArgumentException("Insert "+argument+" : argument not an integer.");
@@ -121,14 +134,7 @@ public class TreeUI {
         }
     }
     
-    private class New extends Command {
-        public String help() { return "new"; }
-
-        public void execute(String argument) throws IllegalArgumentException {
-            target = new AVLTree();
-        }
-    }
-            
+    // allows user to get help(view available commands)
     private class Help extends Command {
         public String help() { return "help"; }
         
@@ -149,6 +155,7 @@ public class TreeUI {
         }
     }
 
+    // terminates the program
     private class Quit extends Command {
         public String help() { return "quit"; }
        

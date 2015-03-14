@@ -59,16 +59,20 @@ public class TreeUtils {
         }
         else if (node.getKey()>key){
             node.setLeft(insert(node.getLeft(),key));
+            // checks if nodes is unbalanced and corrects it, if it is
             if (node.getBalanceFactor() > 1){
                 node = rebalanceLeft(node,key);
             }
         }
         else{
             node.setRight(insert(node.getRight(),key));
+            // checks if nodes is unbalanced and corrects it, if it is
             if (node.getBalanceFactor() < -1){
                 node = rebalanceRight(node,key);
             }
         }
+        
+        // Sets the heights for each node
         if (node.hasLeft() && node.hasRight()){
             node.setHeight(Math.max(height(node.getLeft()), height(node.getRight()))+1);
         }
@@ -129,7 +133,6 @@ public class TreeUtils {
      * Called in the rotate left and right methods.
      */
     private static void resetHeights(AVLTreeNode node){
-        int i;
         if (node.hasLeft() && node.hasRight()){
             node.setHeight(Math.min(height(node.getLeft()), height(node.getRight()))+1);
         }
