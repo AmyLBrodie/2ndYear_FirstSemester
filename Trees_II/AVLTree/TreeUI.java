@@ -114,7 +114,8 @@ public class TreeUI {
             }
             catch (NumberFormatException numFormE) {
                 throw new IllegalArgumentException("Insert "+argument+" : argument not an integer.");
-            } catch (FileNotFoundException ex) {
+            } 
+            catch (FileNotFoundException ex) {
                 Logger.getLogger(TreeUI.class.getName()).log(Level.SEVERE, null, ex);
             }    
         }

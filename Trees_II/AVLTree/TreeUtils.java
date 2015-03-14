@@ -1,4 +1,4 @@
-package AVLTree;
+
 
 // Task1
 
@@ -51,25 +51,36 @@ public class TreeUtils {
      * Recursive implementation of insert on an AVLTreeNode structure.
      */
     public static AVLTreeNode insert(AVLTreeNode node, Integer key) {
-        if (!node.hasKey()){
+        if (node == null){
             node = new AVLTreeNode(key);
         }
-        else if (node.getKey()==key){
+        else if (node.getKey()== key){
             
         }
         else if (node.getKey()>key){
             node.setLeft(insert(node.getLeft(),key));
-            if (node.getLeft().getHeight() - node.getRight().getHeight() > 1){
+            if (node.getBalanceFactor() > 1){
                 node = rebalanceLeft(node,key);
             }
         }
         else{
             node.setRight(insert(node.getRight(),key));
-            if (node.getRight().getHeight() - node.getLeft().getHeight() > 1){
+            if (node.getBalanceFactor() < -1){
                 node = rebalanceRight(node,key);
             }
         }
-        node.setHeight(height(node)+1);
+        if (node.hasLeft() && node.hasRight()){
+            node.setHeight(Math.max(height(node.getLeft()), height(node.getRight()))+1);
+        }
+        else if (node.hasLeft()){
+            node.setHeight(height(node.getLeft())+1);
+        }
+        else if (node.hasRight()){
+            node.setHeight(height(node.getRight())+1);
+        }
+        else{
+            node.setHeight(1);
+        }
         return node;
     }
     
@@ -106,13 +117,43 @@ public class TreeUtils {
     public static AVLTreeNode rotateWithLeftChild( AVLTreeNode k2 )
     {
         AVLTreeNode k1;
-        k1 = k2.getLeft();
-        k1.setHeight(height(k2.getLeft()));
-        k2.setLeft(k1.getRight());
-        k2.getLeft().setHeight(height(k1.getRight()));
-        k1.setRight(k2);
-        k1.getRight().setHeight(height(k2));
+        k1 = k2.left;
+        k2.left = k1.right;
+        k1.right = k2;
+        resetHeights(k1);
         return k1;
+    }
+    
+    /**
+     * Reset the heights of trees that have been rotated.
+     * Called in the rotate left and right methods.
+     */
+    private static void resetHeights(AVLTreeNode node){
+        int i;
+        if (node.hasLeft() && node.hasRight()){
+            node.setHeight(Math.min(height(node.getLeft()), height(node.getRight()))+1);
+        }
+        else if (node.hasLeft()){
+            
+            if (height(node) != height(node.getLeft())+1){
+                node.setHeight(height(node.getLeft())+1);
+            }
+        }
+        else if (node.hasRight()){
+            
+            if (height(node) != height(node.getRight())+1){
+                node.setHeight(height(node.getRight())+1);
+            }
+        }
+        else{
+            node.setHeight(1);
+        }
+        if (node.hasRight()){
+            resetHeights(node.getRight());
+        }
+        if (node.hasLeft()){
+            resetHeights(node.getLeft());
+        }
     }
 
     /**
@@ -122,12 +163,10 @@ public class TreeUtils {
     public static AVLTreeNode rotateWithRightChild( AVLTreeNode k1 )
     {
         AVLTreeNode k2;
-        k2 = k1.getRight();
-        k2.setHeight(height(k1.getRight()));
-        k1.setRight(k2.getLeft());
-        k1.getRight().setHeight(height(k2.getLeft()));
-        k2.setLeft(k1);
-        k2.getLeft().setHeight(height(k1));
+        k2 = k1.right;
+        k1.right = k2.left;
+        k2.left = k1;
+        resetHeights(k2);
         return k2;
     }
 
@@ -138,7 +177,8 @@ public class TreeUtils {
      */
     public static AVLTreeNode doubleRotateWithLeftChild( AVLTreeNode k3 )
     {
-        k3.setLeft(rotateWithRightChild(k3.getLeft()));
+        System.out.println("left");
+        k3.left = rotateWithRightChild(k3.left);
         return rotateWithLeftChild(k3);
     }
 
@@ -149,7 +189,8 @@ public class TreeUtils {
      */
     public static AVLTreeNode doubleRotateWithRightChild( AVLTreeNode k1 )
     {
-        k1.setRight(rotateWithLeftChild(k1.getRight()));
+        System.out.println("right");
+        k1.right = rotateWithLeftChild(k1.right);
         return rotateWithRightChild(k1);
     }
 

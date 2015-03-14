@@ -1,4 +1,4 @@
-package AVLTree;
+
 
 // Task1
 
@@ -24,13 +24,7 @@ public class AVLTree {
      * Insert the given key into the tree.
      */
     public void insert(Integer key) {
-        if (root == null){
-            root = TreeUtils.insert(root, key);
-        }
-        else{
-            TreeUtils.insert(root, key);
-        }
-        //root = TreeUtils.insert(root, key); 
+        root = TreeUtils.insert(root, key); 
     }
 
     /**
