@@ -1,4 +1,4 @@
-// Task1
+// Task2
 
 
 import java.io.PrintStream;
@@ -65,7 +65,7 @@ public class SimpleTreeWriterImpl implements SimpleTreeWriter {
                 print.print(spacing(between)); // prints spacing between nodes
                 printNode(iterate.next(), length); // prints next node on the level
             }
-            print.println(""); // moves to next line so that the next level can be printed
+            print.println("");// moves to next line so that the next level can be printed
             print.println("");
         }
         
