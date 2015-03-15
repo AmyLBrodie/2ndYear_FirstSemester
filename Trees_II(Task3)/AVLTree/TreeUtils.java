@@ -1,6 +1,6 @@
 
 
-// Task1
+// Task3
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,15 +30,15 @@ public class TreeUtils {
     /** 
      * Determine whether the given tree structure contains the given key.
      */
-    public static boolean contains(AVLTreeNode node, Integer key) {
+    public static boolean contains(AVLTreeNode node, String key) {
         boolean flag;
-        if (!node.hasKey()){
+        if (node == null){
             flag = false;
         }
-        else if(node.getKey() == key){
+        else if(node.getKey().equals(key)){
             flag = true;
         }
-        else if(node.getKey() < key){
+        else if(node.getKey().charAt(0) < key.charAt(0)){
             flag = contains(node.getRight(),key);
         }
         else{
@@ -50,29 +50,28 @@ public class TreeUtils {
     /**
      * Recursive implementation of insert on an AVLTreeNode structure.
      */
-    public static AVLTreeNode insert(AVLTreeNode node, Integer key) {
+    public static AVLTreeNode insert(AVLTreeNode node, String key) {
         if (node == null){
             node = new AVLTreeNode(key);
         }
-        else if (node.getKey()== key){
+        else if (node.getKey().equals(key)){
             
         }
-        else if (node.getKey()>key){
+        else if (node.getKey().charAt(0)== key.charAt(0)){
+            node.setKey(key);
+        }
+        else if (node.getKey().charAt(0)>key.charAt(0)){
             node.setLeft(insert(node.getLeft(),key));
-            // checks if nodes is unbalanced and corrects it, if it is
             if (node.getBalanceFactor() > 1){
                 node = rebalanceLeft(node,key);
             }
         }
         else{
             node.setRight(insert(node.getRight(),key));
-            // checks if nodes is unbalanced and corrects it, if it is
             if (node.getBalanceFactor() < -1){
                 node = rebalanceRight(node,key);
             }
         }
-        
-        // Sets the heights for each node
         if (node.hasLeft() && node.hasRight()){
             node.setHeight(Math.max(height(node.getLeft()), height(node.getRight()))+1);
         }
@@ -81,7 +80,7 @@ public class TreeUtils {
         }
         else if (node.hasRight()){
             node.setHeight(height(node.getRight())+1);
-        }
+        } 
         else{
             node.setHeight(1);
         }
@@ -89,11 +88,85 @@ public class TreeUtils {
     }
     
     /**
+     * Recursive implementation of delete on an AVLTreeNode structure.
+     */
+    public static AVLTreeNode delete(AVLTreeNode node, String key) {
+        if (node == null){
+            System.out.println("Error: The value could not be found in the tree");
+        }
+        else if(node.getKey().charAt(0)>key.charAt(0)){
+            node.setLeft(delete(node.getLeft(),key));
+        }
+        else if(node.getKey().charAt(0)<key.charAt(0)){
+            node.setRight(delete(node.getRight(),key));
+        }
+        else if(!node.getKey().equals(key)){
+            System.out.println("Error: The value could not be found and deleted from the tree");
+        }
+        else {
+            if (!node.hasRight() && !node.hasLeft()){
+                node = null;
+            }
+            else if(node.hasRight() && !node.hasLeft()){
+                node = node.getRight();
+                node.right = null;
+            }
+            else if(!node.hasRight() && node.hasLeft()){
+                node = node.getLeft();
+                node.left = null;
+            }
+            else{
+                AVLTreeNode successor = successor(node);
+                node.setKey(successor.getKey());
+                node.setKeyValue(successor.getKey());
+                if (successor.hasRight()){
+                    node.setRight(successor.getRight());
+                }
+                else{
+                    node.setRight(null);
+                }
+            }
+        }
+        if (node != null && node.hasLeft() && node.hasRight()){
+            node.setHeight(Math.max(height(node.getLeft()), height(node.getRight()))+1);
+        }
+        else if (node != null &&node.hasLeft()){
+            node.setHeight(height(node.getLeft())+1);
+        }
+        else if (node != null &&node.hasRight()){
+            node.setHeight(height(node.getRight())+1);
+        } 
+        else if (node != null ){
+            node.setHeight(1);
+        }
+        if (node!=null && node.getBalanceFactor() < -1){
+            node = rebalanceRight(node,key);
+        }
+        if (node != null && node.getBalanceFactor() > 1){
+            node = rebalanceLeft(node,key);
+        }
+        
+        return node;
+    }
+    
+     /**
+     * Finds the successor of the node to be deleted.
+     * Either inorder or preorder successor
+     */
+    public static AVLTreeNode successor(AVLTreeNode node){
+        AVLTreeNode successor;
+        successor = node.getRight();
+        return successor;
+        
+    }
+    
+    
+    /**
      * Rebalance binary tree node from the left.
      * Handles case 1 and case 2
      */
-    public static AVLTreeNode rebalanceLeft(AVLTreeNode node, Integer key){
-        if (key < node.getLeft().getKey()){
+    public static AVLTreeNode rebalanceLeft(AVLTreeNode node, String key){
+        if (key.charAt(0) < node.getLeft().getKey().charAt(0)){
             return rotateWithLeftChild(node);
         }
         else{
@@ -105,8 +178,8 @@ public class TreeUtils {
      * Rebalance binary tree node from the right.
      * Handles case 3 and case 4
      */
-    public static AVLTreeNode rebalanceRight(AVLTreeNode node, Integer key){
-        if (key > node.getRight().getKey()){
+    public static AVLTreeNode rebalanceRight(AVLTreeNode node, String key){
+        if (key.charAt(0) > node.getRight().getKey().charAt(0)){
             return rotateWithRightChild(node);
         }
         else{
@@ -133,6 +206,7 @@ public class TreeUtils {
      * Called in the rotate left and right methods.
      */
     private static void resetHeights(AVLTreeNode node){
+        int i;
         if (node.hasLeft() && node.hasRight()){
             node.setHeight(Math.min(height(node.getLeft()), height(node.getRight()))+1);
         }
