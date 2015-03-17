@@ -37,6 +37,7 @@ public class TreeUtils {
             flag = false;
         }
         else if(node.getKeyValue() == key.toUpperCase().charAt(0)){
+            list = node.getList();
             flag = false;
             for (int i=0; i<list.size(); i++){
                 if (key.equals(list.get(i))){
@@ -45,7 +46,7 @@ public class TreeUtils {
                 }
             }
         }
-        else if(node.getKey().charAt(0) < key.charAt(0)){
+        else if(node.getKeyValue() < key.toUpperCase().charAt(0)){
             flag = contains(node.getRight(),key);
         }
         else{
@@ -65,7 +66,7 @@ public class TreeUtils {
         else if(node.getKeyValue() == key.toUpperCase().charAt(0)){
             response = "("+Integer.toString(node.getNumValues())+")"+node.getFindValue();
         }
-        else if(node.getKey().charAt(0) < key.charAt(0)){
+        else if(node.getKeyValue() < key.toUpperCase().charAt(0)){
             response = find(node.getRight(),key);
         }
         else{
@@ -99,13 +100,13 @@ public class TreeUtils {
                 node.setNumValues(node.getNumValues()+1);
             }
         }
-        else if (node.getKeyValue()>key.charAt(0)){
+        else if (node.getKeyValue()>key.toUpperCase().charAt(0)){
             node.setLeft(insert(node.getLeft(),key));
             if (node.getBalanceFactor() > 1){
                 node = rebalanceLeft(node,key);
             }
         }
-        else{
+        else {
             node.setRight(insert(node.getRight(),key));
             if (node.getBalanceFactor() < -1){
                 node = rebalanceRight(node,key);
@@ -157,11 +158,11 @@ public class TreeUtils {
             }
         }
         // checks if current node is greater than the key to be deleted
-        else if(node.getKey().charAt(0)>key.charAt(0)){
+        else if(node.getKeyValue()>key.toUpperCase().charAt(0)){
             node.setLeft(delete(node.getLeft(),key)); // moves to left child of node
         }
         // checks if current node is less than key to be deleted
-        else if(node.getKey().charAt(0)<key.charAt(0)){
+        else if(node.getKeyValue()<key.toUpperCase().charAt(0)){
             node.setRight(delete(node.getRight(),key)); // moves to right child of node
         }
         // checks key at node is equal to key to be deleted
@@ -248,7 +249,7 @@ public class TreeUtils {
      * Handles case 1 and case 2
      */
     public static AVLTreeNode rebalanceLeft(AVLTreeNode node, String key){
-        if (key.charAt(0) < node.getLeft().getKey().charAt(0)){
+        if (key.toUpperCase().charAt(0) < node.getLeft().getKeyValue()){
             return rotateWithLeftChild(node);
         }
         else{
@@ -274,7 +275,7 @@ public class TreeUtils {
      * Handles case 3 and case 4
      */
     public static AVLTreeNode rebalanceRight(AVLTreeNode node, String key){
-        if (key.charAt(0) > node.getRight().getKey().charAt(0)){
+        if (key.toUpperCase().charAt(0) > node.getRight().getKeyValue()){
             return rotateWithRightChild(node);
         }
         else{

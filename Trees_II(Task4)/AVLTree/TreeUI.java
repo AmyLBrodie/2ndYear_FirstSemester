@@ -114,7 +114,7 @@ public class TreeUI {
 
         public void execute(String argument) throws IllegalArgumentException {
             try {
-                String response = target.find(argument);
+                String response = target.find(argument.toUpperCase());
                 System.out.println(response);
             }
             catch (NumberFormatException numFormE) {
