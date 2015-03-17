@@ -13,7 +13,8 @@ import java.util.List;
  */
 public class TreeUtils {
    
-        
+    private static List<String> list ;
+    
     /**
      * Obtain the height value of the given node.
      * @return 0 if <code>node==null</code>, otherwise <code>node.getHeight()</code>.
@@ -35,8 +36,14 @@ public class TreeUtils {
         if (node == null){
             flag = false;
         }
-        else if(node.getKey().equals(key)){
-            flag = true;
+        else if(node.getKeyValue() == key.toUpperCase().charAt(0)){
+            flag = false;
+            for (int i=0; i<list.size(); i++){
+                if (key.equals(list.get(i))){
+                    flag = true;
+                    break;
+                }
+            }
         }
         else if(node.getKey().charAt(0) < key.charAt(0)){
             flag = contains(node.getRight(),key);
@@ -53,14 +60,26 @@ public class TreeUtils {
     public static AVLTreeNode insert(AVLTreeNode node, String key) {
         if (node == null){
             node = new AVLTreeNode(key);
+            node.setNumValues(1);
         }
-        else if (node.getKey().equals(key)){
-            
+        else if (node.getKeyValue() == key.toUpperCase().charAt(0)){
+            list = node.getList();
+            boolean flag = false;
+            for (int i=0; i<list.size(); i++){
+                if (key.equals(list.get(i))){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == true){
+                node.setNumValues(node.getNumValues()+1);
+            }
+            else{
+                node.addToList(key);
+                node.setNumValues(node.getNumValues()+1);
+            }
         }
-        else if (node.getKey().charAt(0)== key.charAt(0)){
-            node.setKey(key);
-        }
-        else if (node.getKey().charAt(0)>key.charAt(0)){
+        else if (node.getKeyValue()>key.charAt(0)){
             node.setLeft(insert(node.getLeft(),key));
             if (node.getBalanceFactor() > 1){
                 node = rebalanceLeft(node,key);
@@ -116,31 +135,27 @@ public class TreeUtils {
             // checks if node has a right child but no left child
             else if(node.hasRight() && !node.hasLeft()){
                 node = node.getRight(); // sets node equal to its right child
-                node.right = null; // removes right child of node
+                node.setRight(null); // removes right child of node
             }
             // checks if node has a left child but no right child
             else if(!node.hasRight() && node.hasLeft()){
                 node = node.getLeft(); // sets node equal to its left child
-                node.left = null; // removes left child of node
+                node.setLeft(null); // removes left child of node
             }
             // node has two children
             else{
                 AVLTreeNode successor = successor(node); // finds nodes successor
                 node.setKey(successor.getKey()); // sets nodes key equal to successors key
-                node.setKeyValue(successor.getKey()); // sets nodes keyValue equal to its successors keyValue
-                // checks if successor has left child
-                if (successor.hasLeft() && node.hasLeft()){
-                    node.left = insert(node.getLeft(),successor.getLeft().getKey());
-                }
-                else{
-                    node.setLeft(successor.getLeft());
-                }
+                node.setKeyValue(successor.getKeyValue()); // sets nodes keyValue equal to its successors keyValue
                 // checks if successor has right child
-                if (successor.hasRight()){
+                if (node.getRight()==successor && successor.hasRight()){
                     node.setRight(successor.getRight()); // sets right child of node to right child of successor
                 }
+                else if(node.getRight()==successor && !successor.hasRight()){
+                    node.setRight(null);
+                }
                 else{
-                    node.setRight(null); // deletes right child of node
+                    node.deleteNode(successorParent(node)); // delete successor
                 }
             }
         }
@@ -159,15 +174,32 @@ public class TreeUtils {
     
      /**
      * Finds the successor of the node to be deleted.
-     * Either inorder or preorder successor
+     * 
      */
     public static AVLTreeNode successor(AVLTreeNode node){
         AVLTreeNode successor;
         successor = node.getRight();
+        while (successor.hasLeft()){
+            successor = successor.getLeft();
+        }
         return successor;
         
     }
     
+    /**
+     * Finds the parent of the successor of the node to be deleted.
+     * 
+     */
+    public static AVLTreeNode successorParent(AVLTreeNode node){
+        AVLTreeNode successor, parent = null;
+        successor = node.getRight();
+        while (successor.hasLeft()){
+            parent = successor;
+            successor = successor.getLeft();
+        }
+        return parent;
+        
+    }
     
     /**
      * Rebalance binary tree node from the left.
@@ -247,9 +279,9 @@ public class TreeUtils {
     public static AVLTreeNode rotateWithLeftChild( AVLTreeNode k2 )
     {
         AVLTreeNode k1;
-        k1 = k2.left;
-        k2.left = k1.right;
-        k1.right = k2;
+        k1 = k2.getLeft();
+        k2.setLeft(k1.getRight());
+        k1.setRight(k2);
         resetHeights(k1);
         return k1;
     }
@@ -262,9 +294,9 @@ public class TreeUtils {
     public static AVLTreeNode rotateWithRightChild( AVLTreeNode k1 )
     {
         AVLTreeNode k2;
-        k2 = k1.right;
-        k1.right = k2.left;
-        k2.left = k1;
+        k2 = k1.getRight();
+        k1.setRight(k2.getLeft());
+        k2.setLeft(k1);
         resetHeights(k2);
         return k2;
     }
@@ -276,7 +308,7 @@ public class TreeUtils {
      */
     public static AVLTreeNode doubleRotateWithLeftChild( AVLTreeNode k3 )
     {
-        k3.left = rotateWithRightChild(k3.left);
+        k3.setLeft(rotateWithRightChild(k3.getLeft()));
         return rotateWithLeftChild(k3);
     }
 
@@ -287,7 +319,7 @@ public class TreeUtils {
      */
     public static AVLTreeNode doubleRotateWithRightChild( AVLTreeNode k1 )
     {
-        k1.right = rotateWithLeftChild(k1.right);
+        k1.setRight(rotateWithLeftChild(k1.getRight()));
         return rotateWithRightChild(k1);
     }
     

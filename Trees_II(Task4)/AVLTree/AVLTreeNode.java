@@ -1,6 +1,10 @@
-//Task4
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+//Task4
 
 /**
  * Implements a node suitable for building AVL tree structures.
@@ -10,17 +14,19 @@ import java.util.*;
  */
 public class AVLTreeNode {
 
-    int height, numValues = 0;
-    char keyValue;
-    HashMap<Character, List<String>> nodes = new HashMap<Character, List<String>>();
-    List values = new ArrayList<String>();
+    private String key;
+    private int height;
+    private char keyValue;
+    private int numValues;
     
-    AVLTreeNode left;
-    AVLTreeNode right;
+    private AVLTreeNode left;
+    private AVLTreeNode right;
+    
+    private List<String> values = new ArrayList<String>();
     
     public final static AVLTreeNode EMPTY_NODE = new AVLTreeNode();
     
-    private AVLTreeNode() { this.values=null; this.height=-1; this.left=null; this.right=null; }
+    private AVLTreeNode() { this.key=null; this.height=-1; this.left=null; this.right=null; }
     
     
     /**
@@ -32,28 +38,84 @@ public class AVLTreeNode {
         assert(key!=null);
         this.left=left;
         this.right=right;
-        this.values.add(key);
+        this.key=key;
         this.height=0;
-        this.keyValue=key.toUpperCase().charAt(0);
-        this.numValues=values.size();
+        this.numValues = 0;
+        this.keyValue=setKeyValue(key);
+        values.add(key);
     }
     
     /* Low level structural operations */  
+    
+    /**
+     * Determine the nodes keyValue.
+     */
+    public char setKeyValue(String key) {
+        return key.toUpperCase().charAt(0); 
+    }
+    
+    /**
+     * Determine the nodes keyValue.
+     */
+    public void setKeyValue(char keyValue) {
+        this.keyValue =  keyValue; 
+    }
+    
+    /**
+     * Get the arraylist of values in specified node.
+     */
+    public List<String> getList() {
+        return this.values; 
+    }
+    
+    /**
+     * Obtain the values stored in this node.
+     */
+    public String getValue() { 
+        StringBuilder builder = new StringBuilder();
+        for (int i=0; i<this.getList().size(); i++){
+            builder.append("\n"+this.getList().get(i));
+        }
+        return builder.toString(); 
+    }
+    
+    /**
+     * Add values to the arraylist of values in specified node.
+     */
+    public void addToList(String key) {
+        this.values.add(key);
+    }
+    
+    /**
+     * Deletes specified node.
+     */
+    public void deleteNode(AVLTreeNode node){
+        node.setLeft(null);
+    }
+    
     
     
     /**
      * Obtain keyValue of this node.
      */
-    public Character getKeyValue() { 
+    public char getKeyValue() { 
         return this.keyValue; 
     }
     
     /**
-     * Obtain number of values in this node.
+     * Obtain keyValue of this node.
      */
     public Integer getNumValues() { 
         return this.numValues; 
     }
+    
+    /**
+     * Obtain keyValue of this node.
+     */
+    public void setNumValues(int values) { 
+        this.numValues = values; 
+    }
+    
     
     /**
      * Determine whether this node has a left branch.
@@ -67,19 +129,12 @@ public class AVLTreeNode {
     /** 
      * Determine whether this node has a key.
      */
-    public boolean hasValue() { return !values.isEmpty(); }
+    public boolean hasKey() { return key!=null; }
         
     /**
      * Obtain the key stored in this node.
      */
-    public String getValue() { 
-        StringBuilder builder = new StringBuilder();
-        for (int i=0; i<values.size(); i++){
-            builder.append("\n"+values.get(i));
-        }
-        return builder.toString(); 
-    
-    }
+    public String getKey() { return key; }
     
     /**
      * Obtain the height value stored at this node. (Requirs that ka
@@ -119,7 +174,13 @@ public class AVLTreeNode {
         this.height=height; 
     }
     
-    
+    /**
+     * Reset the key stored in this node.
+     */
+    public void setKey(String key) { 
+        assert(this!=EMPTY_NODE);
+        this.key=key; 
+    }
     
     /**
      * Set this node's left branch.
@@ -141,11 +202,16 @@ public class AVLTreeNode {
      * Obtain the longest node label for nodes stored in this tree structure.
      */
     public Integer getLargest() {
-        Integer largest = this.toString().length();
+        Integer largest = this.values.get(0).length();
+        for (int i=0; i<this.values.size(); i++){
+            largest = Math.max(largest,this.values.get(i).length());
+        }
         if (this.hasLeft()) 
             largest = Math.max(largest, this.getLeft().getLargest());
         if (this.hasRight()) 
             largest = Math.max(largest, this.getRight().getLargest());
+        
+        largest = Math.max(largest, 6);
         
         return largest;
     }
@@ -155,8 +221,12 @@ public class AVLTreeNode {
      * Obtain a String representation of this node.
      */
     public String toString() {
-        return "("+this.getKeyValue()+")"+"("+this.getNumValues()+")" + this.getValue();
+        if (this.values.size()>0){
+            return "("+this.getKeyValue()+")"+"("+this.getNumValues()+")" + this.getValue();
+        }
+        else{
+            return "";
+        }
     }
-    
 
 }
