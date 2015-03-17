@@ -11,11 +11,11 @@
 public class AVLTreeNode {
 
     private String key;
-    int height;
-    int keyValue;
+    private int height;
+    private int keyValue;
     
-    AVLTreeNode left;
-    AVLTreeNode right;
+    private AVLTreeNode left;
+    private AVLTreeNode right;
     
     public final static AVLTreeNode EMPTY_NODE = new AVLTreeNode();
     
