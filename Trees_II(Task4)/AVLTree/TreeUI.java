@@ -29,6 +29,7 @@ public class TreeUI {
         commands.put("new", new New());
         commands.put("insert", new Insert());
         commands.put("contains", new Contains());
+        commands.put("find", new Find());
         commands.put("delete", new Delete());
         commands.put("print", new Print());
         commands.put("write", new Write());
@@ -99,6 +100,21 @@ public class TreeUI {
         public void execute(String argument) throws IllegalArgumentException {
             try {
                 String response = target.contains(argument) ? "Yes" : "No";
+                System.out.println(response);
+            }
+            catch (NumberFormatException numFormE) {
+                throw new IllegalArgumentException("Insert "+argument+" : argument not an integer.");
+            }    
+        }
+    }
+    
+    // allows user to check if the specified value is in the tree
+    private class Find extends Command {
+        public String help() { return "find <key value>"; }
+
+        public void execute(String argument) throws IllegalArgumentException {
+            try {
+                String response = target.find(argument);
                 System.out.println(response);
             }
             catch (NumberFormatException numFormE) {

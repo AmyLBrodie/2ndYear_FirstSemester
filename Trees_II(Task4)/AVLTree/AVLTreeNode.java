@@ -79,11 +79,35 @@ public class AVLTreeNode {
         return builder.toString(); 
     }
     
+     /**
+     * Obtain the values stored in this node for the find method.
+     */
+    public String getFindValue() { 
+        StringBuilder builder = new StringBuilder();
+        builder.append("(");
+        for (int i=0; i<this.getList().size(); i++){
+            builder.append(this.getList().get(i));
+            if (i != this.getList().size()-1){
+                builder.append(", ");
+            }
+        }
+        builder.append(")");
+        return builder.toString(); 
+    
+    }
+    
     /**
      * Add values to the arraylist of values in specified node.
      */
     public void addToList(String key) {
         this.values.add(key);
+    }
+    
+    /**
+     * Delete values from the arraylist of values in specified node.
+     */
+    public void deleteFromList(String key) {
+        this.values.remove(key);
     }
     
     /**

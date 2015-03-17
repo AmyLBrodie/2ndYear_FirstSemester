@@ -53,5 +53,17 @@ public class AVLTree {
             return TreeUtils.contains(root, key);
         }
     }
+    
+    /**
+     * Finds the specified key in the tree.
+     */
+    public String find(String key) {
+        if (root==null) {
+            return "No entry found";
+        }
+        else {
+            return TreeUtils.find(root, key);
+        }
+    }
 
 }

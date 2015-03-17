@@ -54,6 +54,26 @@ public class TreeUtils {
         return flag;
     } 
     
+    /** 
+     * Determine whether the given tree structure contains the given key.
+     */
+    public static String find(AVLTreeNode node, String key) {
+        String response;
+        if (node == null){
+            response = "No entry found";
+        }
+        else if(node.getKeyValue() == key.toUpperCase().charAt(0)){
+            response = "("+Integer.toString(node.getNumValues())+")"+node.getFindValue();
+        }
+        else if(node.getKey().charAt(0) < key.charAt(0)){
+            response = find(node.getRight(),key);
+        }
+        else{
+            response = find(node.getLeft(),key);
+        }
+        return response;
+    } 
+    
     /**
      * Recursive implementation of insert on an AVLTreeNode structure.
      */
@@ -113,6 +133,28 @@ public class TreeUtils {
         // checks if current node is empty
         if (node == null){
             System.out.println("Error: The value could not be found in the tree");
+        }
+        else if(node.getKeyValue() == key.toUpperCase().charAt(0) && node.getNumValues() > 1){
+            list = node.getList();
+            boolean flag = false;
+            for (int i=0; i<list.size(); i++){
+                if (key.equals(list.get(i))){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == true){
+                if (list.size()>1){
+                    node.deleteFromList(key);
+                    node.setNumValues(node.getNumValues()-1); 
+                }
+                else{
+                    node.setNumValues(node.getNumValues()-1);
+                }
+            }
+            else{
+                System.out.println("Error: The value could not be found in the tree");
+            }
         }
         // checks if current node is greater than the key to be deleted
         else if(node.getKey().charAt(0)>key.charAt(0)){
