@@ -223,7 +223,7 @@ public class AVLTreeNode {
      * Obtain a String representation of this node.
      */
     public String toString() {
-        return this.getKeyValue()+"("+this.getBalanceFactor()+")" + this.getKey();
+        return this.getKeyValue()+"("+this.getBalanceFactor()+")" + "("+this.getKey()+")";
     }
     
 
