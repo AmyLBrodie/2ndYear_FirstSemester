@@ -32,7 +32,10 @@ public class TreeUtils {
      */
     public static boolean contains(AVLTreeNode node, Integer key) {
         boolean flag;
-        if (!node.hasKey()){
+        if (node == null){
+           flag = false; 
+        }
+        else if (!node.hasKey()){
             flag = false;
         }
         else if(node.getKey() == key){
@@ -121,11 +124,26 @@ public class TreeUtils {
     public static AVLTreeNode rotateWithLeftChild( AVLTreeNode k2 )
     {
         AVLTreeNode k1;
-        k1 = k2.left;
-        k2.left = k1.right;
-        k1.right = k2;
+        k1 = k2.getLeft();
+        k2.setLeft(k1.getRight());
+        k1.setRight(k2);
         resetHeights(k1);
         return k1;
+    }
+    
+
+    /**
+     * Rotate binary tree node with right child.
+     * This is a single rotation for case 4.
+     */
+    public static AVLTreeNode rotateWithRightChild( AVLTreeNode k1 )
+    {
+        AVLTreeNode k2;
+        k2 = k1.getRight();
+        k1.setRight(k2.getLeft());
+        k2.setLeft(k1);
+        resetHeights(k2);
+        return k2;
     }
     
     /**
@@ -159,19 +177,6 @@ public class TreeUtils {
         }
     }
 
-    /**
-     * Rotate binary tree node with right child.
-     * This is a single rotation for case 4.
-     */
-    public static AVLTreeNode rotateWithRightChild( AVLTreeNode k1 )
-    {
-        AVLTreeNode k2;
-        k2 = k1.right;
-        k1.right = k2.left;
-        k2.left = k1;
-        resetHeights(k2);
-        return k2;
-    }
 
     /**
      * Double rotate binary tree node: first rotate k3's left child
@@ -180,7 +185,7 @@ public class TreeUtils {
      */
     public static AVLTreeNode doubleRotateWithLeftChild( AVLTreeNode k3 )
     {
-        k3.left = rotateWithRightChild(k3.left);
+        k3.setLeft(rotateWithRightChild(k3.getLeft()));
         return rotateWithLeftChild(k3);
     }
 
@@ -191,7 +196,7 @@ public class TreeUtils {
      */
     public static AVLTreeNode doubleRotateWithRightChild( AVLTreeNode k1 )
     {
-        k1.right = rotateWithLeftChild(k1.right);
+        k1.setRight(rotateWithLeftChild(k1.getRight()));
         return rotateWithRightChild(k1);
     }
 
