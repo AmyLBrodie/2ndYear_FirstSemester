@@ -11,11 +11,11 @@
 public class AVLTreeNode {
 
     private String key;
-    int height;
-    int keyValue;
+    private int height;
+    private int keyValue;
     
-    AVLTreeNode left;
-    AVLTreeNode right;
+    private AVLTreeNode left;
+    private AVLTreeNode right;
     
     public final static AVLTreeNode EMPTY_NODE = new AVLTreeNode();
     
@@ -38,6 +38,19 @@ public class AVLTreeNode {
     
     /* Low level structural operations */  
     
+    /**
+     * Determine the nodes keyValue.
+     */
+    public void setKeyValue(int keyValue) {
+        this.keyValue = keyValue; 
+    }
+    
+    /**
+     * Deletes specified node.
+     */
+    public void deleteNode(AVLTreeNode node){
+        node.setLeft(null);
+    }
     
     /**
      * Determine the nodes keyValue.
