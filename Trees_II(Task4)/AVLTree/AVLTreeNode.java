@@ -127,14 +127,14 @@ public class AVLTreeNode {
     }
     
     /**
-     * Obtain keyValue of this node.
+     * Obtain number of values in this node.
      */
     public Integer getNumValues() { 
         return this.numValues; 
     }
     
     /**
-     * Obtain keyValue of this node.
+     * Set the number of values in the arraylist of this node.
      */
     public void setNumValues(int values) { 
         this.numValues = values; 
@@ -177,7 +177,7 @@ public class AVLTreeNode {
     }
 
         
-        /**
+    /**
      * Obtain this node's left branch. Requires that <code>this.hasLeft()</code>.
      */
     public AVLTreeNode getLeft() { 

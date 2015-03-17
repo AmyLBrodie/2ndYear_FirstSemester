@@ -56,7 +56,7 @@ public class TreeUtils {
     } 
     
     /** 
-     * Determine whether the given tree structure contains the given key.
+     * Determine whether the given tree structure contains the given keyValue returns a list of values.
      */
     public static String find(AVLTreeNode node, String key) {
         String response;
