@@ -69,6 +69,13 @@ public class AVLTreeNode {
     }
     
     /**
+     * Set the arraylist of values in specified node.
+     */
+    public void setList(List<String> list) {
+        this.values = list; 
+    }
+    
+    /**
      * Obtain the values stored in this node.
      */
     public String getValue() { 

@@ -166,7 +166,7 @@ public class TreeUtils {
             node.setRight(delete(node.getRight(),key)); // moves to right child of node
         }
         // checks key at node is equal to key to be deleted
-        else if(!node.getKey().equals(key)){
+        else if(!node.getList().get(0).equals(key)){
             System.out.println("Error: The value could not be found and deleted from the tree");
         }
         // if key at node is key to be deleted
@@ -188,7 +188,7 @@ public class TreeUtils {
             // node has two children
             else{
                 AVLTreeNode successor = successor(node); // finds nodes successor
-                node.setKey(successor.getKey()); // sets nodes key equal to successors key
+                node.setList(successor.getList()); // sets nodes key equal to successors key
                 node.setKeyValue(successor.getKeyValue()); // sets nodes keyValue equal to its successors keyValue
                 // checks if successor has right child
                 if (node.getRight()==successor && successor.hasRight()){
