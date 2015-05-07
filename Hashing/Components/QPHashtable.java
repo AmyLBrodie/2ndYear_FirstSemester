@@ -12,6 +12,9 @@ public class QPHashtable implements Dictionary{
  
     private Entry[] table;
     private int entries;
+    private int iProbes;
+    private int sProbes;
+    private int probes;
  
     public QPHashtable() { this(DEFAULT_SIZE); }
     
@@ -42,11 +45,13 @@ public class QPHashtable implements Dictionary{
     public boolean containsWord(String word) {
         // Implement this.
         int value = hashFunction(word);
+        boolean flag = false;
+        probes = 0;
         if (table[value] == null){
-            return false;
+            flag = false;
         }
         else if (table[value] != null && table[value].isEntryFor(word)){
-            return true;
+            flag = true;
         }
         else if (table[value] != null && ! table[value].isEntryFor(word)){
             int i = 1, previousValue;
@@ -59,15 +64,17 @@ public class QPHashtable implements Dictionary{
                 if (value == hashFunction(word)){
                     break;
                 }
+                probes += 1;
             }
             if (table[value]!= null && table[value].isEntryFor(word)){
-                return true;
+                flag = true;
             }
             else{
-                return false;
+                flag =  false;
             }
         }
-        return false;
+        setSearchProbeSum(probes);
+        return flag;
     }
     
     public List<Definition> getDefinitions(String word) {
@@ -98,7 +105,8 @@ public class QPHashtable implements Dictionary{
     public void insert(String word, Definition definition) {        
         // Implement this.
         int value = hashFunction(word);
-        int probes = 0;
+        boolean flag = false;
+        probes = 0;
         if (table[value] == null){
             table[value] = new EntryImpl(word, definition);
             entries +=1;
@@ -111,23 +119,35 @@ public class QPHashtable implements Dictionary{
             while (table[value] != null){
                 previousValue = value;
                 value = previousValue + 2*i - 1;
-                if (value > table.length){
-                    value -= table.length;
+                if (value > table.length-1){
+                    value %= table.length;
+                }
+                if (table[value] != null && table[value].isEntryFor(word)){
+                    table[value].addDefinition(definition);
+                    probes += 1;
+                    flag = true;
+                    break;
                 }
                 i += 1;
                 probes += 1;
+                if (probes > table.length-1){
+                    throw new IllegalStateException("Number of probes has exceeded the table size.");
+                }
             }
-            table[value] = new EntryImpl(word, definition);
-            entries +=1;
+            if (! flag){
+                table[value] = new EntryImpl(word, definition);
+                entries +=1;
+            }
         }
         
-        if (loadFactor() > 0.5){
+        /*if (loadFactor() > 0.5){
             rehash();
+        }*/
+        if (probes > table.length-1){
+            System.out.println("#");
+            throw new IllegalStateException("Number of probes has exceeded the table size.");
         }
-        
-        if (probes > table.length){
-            IllegalStateException("Number of probes has exceeded the table size.");
-        }
+        setInsertProbeSum(probes);
     }
     
     public void rehash(){
@@ -137,6 +157,7 @@ public class QPHashtable implements Dictionary{
                 oldTable[i] = new EntryImpl(table[i]);
             }
         }
+        
         
         empty();
         table = new Entry[nextPrime(4*table.length)];
@@ -183,9 +204,24 @@ public class QPHashtable implements Dictionary{
 
     
     private void IllegalStateException(String s) {
-        System.out.println(s);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(s); 
     }
 
+    
+   public void setSearchProbeSum(int probes){
+        sProbes += probes;
+    }
+    
+    public void setInsertProbeSum(int probes){
+        iProbes += probes;
+    }
+    
+    public Integer getSearchProbes(){
+        return sProbes;
+    }
+    
+    public Integer getInsertProbes(){
+        return iProbes;
+    } 
    
 }

@@ -12,6 +12,9 @@ public class SCHashtable implements Dictionary{
  
     private ChainedEntry[] table;
     private int entries;
+    private int probes;
+    private int iProbes;
+    private int sProbes;
  
     public SCHashtable() { this(DEFAULT_SIZE); }
     
@@ -41,22 +44,27 @@ public class SCHashtable implements Dictionary{
     
     public boolean containsWord(String word) {
         // Implement this.
+        boolean flag = false;
         int value = hashFunction(word);
+        probes = 0;
         if (table[value] == null){
-            return false;
+            flag = false;
         }
         else if (table[value] != null && table[value].isEntryFor(word)){
-            return true;
+            flag = true;
         }
         else if (table[value] != null && ! table[value].isEntryFor(word)){
             while (table[value].hasNext()){
                 if (table[value].getNext().isEntryFor(word)){
-                    return true;
+                    flag = true;
+                    break;
                 }
+                probes += 1;
                 table[value] = table[value].getNext();
             }
         }
-        return false;
+        setSearchProbeSum(probes);
+        return flag;
     }
     
     public List<Definition> getDefinitions(String word) {
@@ -83,6 +91,7 @@ public class SCHashtable implements Dictionary{
     public void insert(String word, Definition definition) {        
         // Implement this.
         int value = hashFunction(word);
+        probes = 0;
         if (table[value] == null){
             table[value] = new ChainedEntryImpl(word, definition);
             entries +=1;
@@ -93,7 +102,10 @@ public class SCHashtable implements Dictionary{
         else if (table[value] != null && ! table[value].isEntryFor(word)){
             table[value] = new ChainedEntryImpl(word, definition, (ChainedEntryImpl) table[value]);
             entries +=1;
+            probes += 1;
         }
+        
+        setInsertProbeSum(probes);
     }
         
     public boolean isEmpty() { return entries == 0; }
@@ -108,4 +120,20 @@ public class SCHashtable implements Dictionary{
      * Obtain the current load factor (entries / table size).
      */
     public double loadFactor() { return entries/(double)table.length; }
+    
+    public void setSearchProbeSum(int probes){
+        sProbes += probes;
+    }
+    
+    public void setInsertProbeSum(int probes){
+        iProbes += probes;
+    }
+    
+    public Integer getSearchProbes(){
+        return sProbes;
+    }
+    
+    public Integer getInsertProbes(){
+        return iProbes;
+    }
 }

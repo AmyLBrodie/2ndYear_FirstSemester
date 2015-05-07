@@ -50,6 +50,7 @@ public class UserInterface {
             }           
             System.out.println("Enter a word (or '#quit'):");
             word = input.next().toLowerCase();
+            
         }        
         
         

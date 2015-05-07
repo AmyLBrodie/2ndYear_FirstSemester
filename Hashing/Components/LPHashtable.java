@@ -11,6 +11,9 @@ public class LPHashtable implements Dictionary
  
     private Entry[] table;
     private int entries;
+    private int iProbes;
+    private int sProbes;
+    private int probes;
  
     public LPHashtable() { this(DEFAULT_SIZE); }
     
@@ -41,11 +44,13 @@ public class LPHashtable implements Dictionary
     public boolean containsWord(String word) {
         // Implement this.
         int value = hashFunction(word);
+        boolean flag = false;
+        probes = 0;
         if (table[value] == null){
-            return false;
+            flag = false;
         }
         else if (table[value] != null && table[value].isEntryFor(word)){
-            return true;
+            flag = true;
         }
         else if (table[value] != null && ! table[value].isEntryFor(word)){
             while (table[value] != null && ! table[value].isEntryFor(word)){
@@ -56,15 +61,17 @@ public class LPHashtable implements Dictionary
                 if (value == hashFunction(word)){
                     break;
                 }
+                probes += 1;
             }
             if (table[value]!= null && table[value].isEntryFor(word)){
-                return true;
+                flag = true;
             }
             else{
-                return false;
+                flag = false;
             }
         }
-        return false;
+        setSearchProbeSum(probes);
+        return flag;
     }
     
     public List<Definition> getDefinitions(String word) {
@@ -92,6 +99,8 @@ public class LPHashtable implements Dictionary
     public void insert(String word, Definition definition) {        
         // Implement this.
         int value = hashFunction(word);
+        boolean flag = false;
+        probes = 0;
         if (table[value] == null){
             table[value] = new EntryImpl(word, definition);
             entries +=1;
@@ -102,13 +111,27 @@ public class LPHashtable implements Dictionary
         else if (table[value] != null && ! table[value].isEntryFor(word)){
             while (table[value] != null){
                 value += 1;
-                if (value > table.length){
+                if (value > table.length-1){
                     value = 0;
                 }
+                if (table[value] != null && table[value].isEntryFor(word)){
+                    table[value].addDefinition(definition);
+                    probes += 1;
+                    flag = true;
+                    break;
+                }
+                probes += 1;
+                if (probes > table.length-1){
+                    throw new IllegalStateException("Number of probes has exceeded the table size.");
+                }
             }
-            table[value] = new EntryImpl(word, definition);
-            entries +=1;
+            if (! flag){
+                table[value] = new EntryImpl(word, definition);
+                entries +=1;
+            }
         }
+        
+        setInsertProbeSum(probes);
     }
         
     public boolean isEmpty() { return entries == 0; }
@@ -123,7 +146,23 @@ public class LPHashtable implements Dictionary
      * Obtain the current load factor (entries / table size).
      */
     public double loadFactor() { return entries/(double)table.length; }
-        
+    
+    public void setSearchProbeSum(int probes){
+        sProbes += probes;
+    }
+    
+    public void setInsertProbeSum(int probes){
+        iProbes += probes;
+    }
+    
+    public Integer getSearchProbes(){
+        return sProbes;
+    }
+    
+    public Integer getInsertProbes(){
+        return iProbes;
+    }
+    
     
     /* DEBUGGING CODE */
     /**
