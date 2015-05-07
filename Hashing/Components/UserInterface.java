@@ -25,12 +25,12 @@ public class UserInterface {
             case 1:
                 dictionary = new LPHashtable(7481);
                 break;
-//             case 2:
-//                 dictionary = new QPHashtable(7481);
-//                 break;
-//             case 3:
-//                 dictionary = new SCHashtable(3739);
-//                 break;
+            case 2:
+                dictionary = new QPHashtable(7481);
+                break;
+            case 3:
+                dictionary = new SCHashtable(3739);
+                break;
           default: 
                 System.out.println("Selection not recognised.");
                 System.exit(-1);

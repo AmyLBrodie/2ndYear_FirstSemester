@@ -18,6 +18,11 @@ public class EntryImpl implements Entry {
         this.definitions.add(definition);
     }
     
+    public EntryImpl (Entry entry){
+        this.word = entry.getWord();
+        this.definitions = entry.getDefinitions();
+    }
+    
     public String getWord(){
         return word;
     }
