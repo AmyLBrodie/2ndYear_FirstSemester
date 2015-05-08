@@ -140,9 +140,9 @@ public class QPHashtable implements Dictionary{
             }
         }
         
-        /*if (loadFactor() > 0.5){
+        if (loadFactor() > 0.5){
             rehash();
-        }*/
+        }
         if (probes > table.length-1){
             System.out.println("#");
             throw new IllegalStateException("Number of probes has exceeded the table size.");

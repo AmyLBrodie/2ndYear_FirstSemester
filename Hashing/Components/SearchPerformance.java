@@ -268,6 +268,9 @@ public class SearchPerformance {
         
         System.out.println("Results for load factor 0.5: ");
         System.out.println("---------------------------");
+        System.out.println("Average Number of Linear Probes: " + Double.toString(Math.round(outputAverageLP1)));
+        System.out.println("Average Number of Quadratic Probes: " + Double.toString(Math.round(outputAverageQP1)));
+        System.out.println("Average Number of Sequential Chaining Probes: " + Double.toString(Math.round(outputAverageSC1)));
         System.out.println("% difference between quadratic probing and linear probing: " + Double.toString(Math.round(qp_lp1)) + "%");
         System.out.println("% difference between sequential chaining and linear probing: " + Double.toString(Math.round(sc_lp1))+ "%");
         System.out.println("% difference between sequential chaining and quadratic probing: " + Double.toString(Math.round(sc_qp1))+ "%");
@@ -275,6 +278,9 @@ public class SearchPerformance {
         
         System.out.println("Results for load factor 0.75: ");
         System.out.println("---------------------------");
+        System.out.println("Average Number of Linear Probes: " + Double.toString(Math.round(outputAverageLP2)));
+        System.out.println("Average Number of Quadratic Probes: " + Double.toString(Math.round(outputAverageQP2)));
+        System.out.println("Average Number of Sequential Chaining Probes: " + Double.toString(Math.round(outputAverageSC2)));
         System.out.println("% difference between quadratic probing and linear probing: " + Double.toString(Math.round(qp_lp2)) + "%");
         System.out.println("% difference between sequential chaining and linear probing: " + Double.toString(Math.round(sc_lp2))+ "%");
         System.out.println("% difference between sequential chaining and quadratic probing: " + Double.toString(Math.round(sc_qp2))+ "%");
@@ -282,6 +288,9 @@ public class SearchPerformance {
         
         System.out.println("Results for load factor 1: ");
         System.out.println("---------------------------");
+        System.out.println("Average Number of Linear Probes: " + Double.toString(Math.round(outputAverageLP3)));
+        System.out.println("Average Number of Quadratic Probes: " + Double.toString(Math.round(outputAverageQP3)));
+        System.out.println("Average Number of Sequential Chaining Probes: " + Double.toString(Math.round(outputAverageSC3)));
         System.out.println("% difference between quadratic probing and linear probing: " + Double.toString(Math.round(qp_lp3)) + "%");
         System.out.println("% difference between sequential chaining and linear probing: " + Double.toString(Math.round(sc_lp3))+ "%");
         System.out.println("% difference between sequential chaining and quadratic probing: " + Double.toString(Math.round(sc_qp3))+ "%");
