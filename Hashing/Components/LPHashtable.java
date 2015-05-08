@@ -55,7 +55,7 @@ public class LPHashtable implements Dictionary
         else if (table[value] != null && ! table[value].isEntryFor(word)){
             while (table[value] != null && ! table[value].isEntryFor(word)){
                 value += 1; 
-                if (value > table.length){
+                if (value > table.length-1){
                     value = 0;
                 }
                 if (value == hashFunction(word)){

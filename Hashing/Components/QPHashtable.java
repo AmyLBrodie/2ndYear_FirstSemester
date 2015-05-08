@@ -58,7 +58,7 @@ public class QPHashtable implements Dictionary{
             while (table[value] != null && ! table[value].isEntryFor(word)){
                 previousValue = value;
                 value = previousValue + 2*i - 1;
-                if (value > table.length){
+                if (value > table.length-1){
                     value -= table.length;
                 }
                 if (value == hashFunction(word)){
