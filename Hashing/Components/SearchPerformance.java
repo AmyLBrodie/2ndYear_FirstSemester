@@ -37,6 +37,8 @@ public class SearchPerformance {
         int totalProbesLP1 = 0, totalProbesQP1 = 0, totalProbesSC1 = 0, totalProbesLP2 = 0, totalProbesQP2 = 0, totalProbesSC2 = 0, totalProbesLP3 = 0, totalProbesQP3 = 0, totalProbesSC3 = 0;
         File file = new File("lexicon.txt");
         Scanner scan = new Scanner(file);
+        
+        //create list of all words from lexicon
         while (scan.hasNext()){
             String temp = scan.nextLine();
             String word = temp.substring(temp.indexOf(":")+1, temp.lastIndexOf(":")).trim();
@@ -54,8 +56,10 @@ public class SearchPerformance {
         System.out.println("Running 100 trials...");
         System.out.println();
         
+        // run 100 trials
         for (int j=0; j<100; j++){
         
+            // create the list of 100 random words
             for (int i=0; i<20; i++){
                 int random = randomGenerator.nextInt(4997);
                 list[i] = lexicon.get(random);
@@ -244,6 +248,7 @@ public class SearchPerformance {
         
         double outputAverageLP1, outputAverageQP1, outputAverageSC1, outputAverageLP2, outputAverageQP2, outputAverageSC2, outputAverageLP3, outputAverageQP3, outputAverageSC3;
         
+        // calculate averages
         outputAverageLP1 = (double) totalProbesLP1/100;
         outputAverageQP1 = (double) totalProbesQP1/100;
         outputAverageSC1 = (double) totalProbesSC1/100;
@@ -256,6 +261,7 @@ public class SearchPerformance {
         
         double sc_qp1, sc_lp1, qp_lp1, sc_qp2, sc_lp2, qp_lp2, sc_qp3, sc_lp3, qp_lp3;
         
+        // calculate percentages
         qp_lp1 = (((double)outputAverageLP1-outputAverageQP1)/outputAverageLP1)*100;
         sc_lp1 = (((double)outputAverageLP1-outputAverageSC1)/outputAverageLP1)*100;
         sc_qp1 = (((double)outputAverageQP1-outputAverageSC1)/outputAverageQP1)*100;
@@ -266,6 +272,8 @@ public class SearchPerformance {
         sc_lp3 = (((double)outputAverageLP3-outputAverageSC3)/outputAverageLP3)*100;
         sc_qp3 = (((double)outputAverageQP3-outputAverageSC3)/outputAverageQP3)*100;
         
+        
+        // print results to screen
         System.out.println("Results for load factor 0.5: ");
         System.out.println("---------------------------");
         System.out.println("Average Number of Linear Probes: " + Double.toString(Math.round(outputAverageLP1)));

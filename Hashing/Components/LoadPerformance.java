@@ -75,6 +75,7 @@ public class LoadPerformance {
         probesQP = dictionaryQP.getInsertProbes();
         probesSC = dictionarySC.getInsertProbes();
 
+        // prints output to screen
         System.out.println("Results for load factor 0.5: ");
         System.out.println("-----------------------------");
         System.out.println("Linear Probing = " + probesLP);
@@ -133,6 +134,7 @@ public class LoadPerformance {
         probesQP = dictionaryQP.getInsertProbes();
         probesSC = dictionarySC.getInsertProbes();
 
+        // prints output to screen
         System.out.println("Results for load factor 0.75: ");
         System.out.println("------------------------------");
         System.out.println("Linear Probing = " + probesLP);
@@ -194,6 +196,7 @@ public class LoadPerformance {
         probesQP = dictionaryQP.getInsertProbes();
         probesSC = dictionarySC.getInsertProbes();
 
+        // prints output to screen
         System.out.println("Results for load factor 1: ");
         System.out.println("---------------------------");
         System.out.println("Linear Probing = " + probesLP);
