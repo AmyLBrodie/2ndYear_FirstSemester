@@ -11,8 +11,8 @@ import java.util.Scanner;
  */
 public class LoadFile {
     
-    public static String load(String fileName) throws FileNotFoundException{
-        String node1, node2, temp, shortest;
+    public static String load(String fileName, String solution) throws FileNotFoundException{
+        String node1, node2, temp, shortest = "";
         File file = new File(fileName);
         Scanner scan = new Scanner(file);
         int numberOfPaths = 0, pathLength;
@@ -42,10 +42,25 @@ public class LoadFile {
                 nodes.add(node2);
             }
         }
+       // PathFinder path = null;
+        String startNode = "";
+        if (solution.equals("N")){
+            PathFinder path = new PathFinder(paths, nodes);
+            shortest = path.getShortestPath(nodes, paths);
+        }
+        else if (solution.equals("I")){
+            ImprovedPathFinder path = new ImprovedPathFinder(paths, nodes);
+            System.out.println("Enter the node to start at: ");
+            Scanner input = new Scanner(System.in);
+            startNode = input.nextLine();
+            shortest = path.getPath(nodes, startNode);
+        }
+        else {
+            System.out.println("Not a valid option");
+            System.exit(0);
+        }
         
-        PathFinder path = new PathFinder(paths, nodes);
-        
-        shortest = path.getShortestPath(nodes, paths);
+        //shortest = path.getShortestPath(nodes, paths);
         
         return shortest;
     }
