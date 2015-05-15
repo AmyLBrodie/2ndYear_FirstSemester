@@ -14,7 +14,7 @@ public class ImprovedPathFinder extends PathFinder{
         super(paths, nodes);
     }
     
-    private String nextNode(ArrayList<String> nodes, Integer[][] matrix, String path, String fullPath){
+    public String nextNode(ArrayList<String> nodes, Integer[][] matrix, String path, String fullPath){
         int index = nodes.indexOf(path);
         int shortestIndex = index;
         
@@ -34,7 +34,7 @@ public class ImprovedPathFinder extends PathFinder{
         }
 
 
-        if (! queue.isEmpty()){
+        if (! queue.isEmpty() && ! queue.contains(path)){
                 return "";
         }
         else{
@@ -46,20 +46,22 @@ public class ImprovedPathFinder extends PathFinder{
         Integer[][] matrix = super.getMatrix();
         String path = startNode, next, previous;
         next = nextNode(nodes, matrix, startNode, path);
-        previous = startNode; // reassign later
-        //path += next;
+        previous = startNode;
         while (path.length() < nodes.size()){
             if (!queue.isEmpty()){
                 int i = 0;
                 while (i < queue.size()-1){
-                    String node1 = nextNode(nodes, matrix, queue.get(i), path);
-                    String node2 = nextNode(nodes, matrix, queue.get(i+1), path);
+                    String node1 = nextNode(nodes, matrix, queue.get(i), path+queue.get(i));
+                    String node2 = nextNode(nodes, matrix, queue.get(i+1), path+queue.get(i+1));
                     if (matrix[nodes.indexOf(previous)][nodes.indexOf(node1)] < matrix[nodes.indexOf(previous)][nodes.indexOf(node2)]){
+                        previous = queue.get(i);
                         next = node1;
                     }
                     else if (matrix[nodes.indexOf(previous)][nodes.indexOf(node1)] > matrix[nodes.indexOf(previous)][nodes.indexOf(node2)]){
+                        previous = queue.get(i+1);
                         next = node2;
                     }
+                    i++;
                 }
                 queue.clear();
                 path += previous;

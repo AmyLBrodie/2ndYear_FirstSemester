@@ -50,10 +50,24 @@ public class LoadFile {
         }
         else if (solution.equals("I")){
             ImprovedPathFinder path = new ImprovedPathFinder(paths, nodes);
-            System.out.println("Enter the node to start at: ");
+            System.out.println("Enter the node to start at:");
             Scanner input = new Scanner(System.in);
             startNode = input.nextLine();
-            shortest = path.getPath(nodes, startNode);
+            if (nodes.contains(startNode)){
+                shortest = path.getPath(nodes, startNode);
+            }
+            else if (nodes.contains(startNode.toUpperCase())){
+                shortest = path.getPath(nodes, startNode.toUpperCase());
+            }
+            else if (nodes.contains(startNode.toLowerCase())){
+                shortest = path.getPath(nodes, startNode.toLowerCase());
+            }
+            else{
+                System.out.println("That is not a valid node!");
+                System.out.println("Starting at node " + nodes.get(0) + "...");
+                System.out.println();
+                shortest = path.getPath(nodes, nodes.get(0));
+            }
         }
         else {
             System.out.println("Not a valid option");
